@@ -135,3 +135,13 @@ function render(string $template = '', array $variables = []) {
     $view = new \core\modules\View($template, $variables);
     return $view;
 }
+
+/**
+ * Убираем двойные кавычки из строки и заменяем их на одинарные
+ * @param string $string
+ * @return string
+ */
+function replace_quotes(string $string)
+{
+    return preg_replace( '/"([^"]*)"/', "'$1'", $string );
+}

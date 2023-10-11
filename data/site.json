@@ -2,5 +2,8 @@
   "title" : "Заголовок сайта",
   "description" : "Описание (дескрипшн)",
   "keywords" : "Ключевые слова",
-  "lang" : "ru"
+  "lang" : "ru",
+  "locale" : "ru_RU",
+  "image" : "",
+  "metrics" : ""
 }

@@ -11,11 +11,22 @@ class View
     public function __construct(string $template, $variables = [])
     {
         $file = $this->findTemplateFile($template);
+        // Массив переменных, дублируемых по ключу:
+        $oldVariables = [];
         // Загоним список переменных в массив, чтоб не потерять - так добьемся наследования переменных
         foreach ($variables as $key => $variable) {
+            // Если название дублируется, то сохраним значение для выходного массива
+            if (isset(self::$variablesArray[$key])) {
+                $oldVariables[$key] = $variable;
+            }
             self::$variablesArray[$key] = $variable;
         }
-        $this->renderFile($file, $variables);
+        $this->renderFile($file);
+
+        // Вернем старые значения переменных:
+        foreach ($oldVariables as $key => $variable) {
+            self::$variablesArray[$key] = $variable;
+        }
     }
 
     public function renderFile(string $file)
