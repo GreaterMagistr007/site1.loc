@@ -4,7 +4,6 @@ namespace core\modules;
 
 class View
 {
-    const TEMPLATE_DIRECTORY = 'template';
     const FILE_EXTENSION = '.php';
     public function __construct(string $template, $variables = [])
     {
