@@ -1,11 +1,6 @@
 <?php
 const DS = DIRECTORY_SEPARATOR;
 
-function sayHello()
-{
-    echo('Привет от сайта ' . PARAMS['title'] . '!');
-}
-
 function dd(...$vars)
 {
     foreach ($vars as $var) {
@@ -97,6 +92,20 @@ function template_dir($path = '')
     $result .= $path;
 
     return site_dir(DS . 'template' . $result);
+}
+
+function data_dir($path = '')
+{
+    $result = '';
+    if ($path) {
+        if ($path[0] !== '\\') {
+            $result .= '\\';
+        }
+    }
+
+    $result .= $path;
+
+    return site_dir(DS . 'data' . $result);
 }
 
 spl_autoload_register(function ($class) {

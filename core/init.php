@@ -30,5 +30,3 @@ dd(container('Route')::list());
 
 //
 dd($request);
-
-sayHello();
