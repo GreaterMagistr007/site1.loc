@@ -9,13 +9,11 @@ class View
     public function __construct(string $template, $variables = [])
     {
         $file = $this->findTemplateFile($template);
-//        $this->render($file, $variables);
         $this->renderFile($file, $variables);
     }
 
     public function renderFile(string $file, $variables = [])
     {
-//        $result = '';
         ob_start();
         extract($variables);
         require $file;
@@ -30,21 +28,5 @@ class View
         }
 
         return $file;
-    }
-
-    public function render(string $file, array $variables = [])
-    {
-        ob_start();
-
-        foreach ($variables as $key => $variable) {
-            $this->$key = $variable;
-        }
-
-        extract($variables);
-
-
-        require $file;
-
-        ob_get_clean();
     }
 }
