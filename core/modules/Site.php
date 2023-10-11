@@ -8,24 +8,27 @@ final class Site
 {
     protected SiteRepository $repository;
 
+    public string $title;
+    public string $description;
+    public string $keywords;
+
     public function __construct()
     {
         $this->repository = new SiteRepository(PARAMS['DB_DRIVER']);
+
+        $this->title = $this->repository->getTitle();
+        $this->description = $this->repository->getDescription();
+        $this->keywords = $this->repository->getKeywords();
     }
 
-    const MAIN_PAGE_FILE = 'index.php';
+    const MAIN_PAGE_FILE = 'index';
 
     public function getMainPage()
     {
-        dd(
-            $this->repository->getTitle(),
-            $this->repository->getDescription(),
-            $this->repository->getKeywords(),
-        );
         $variables = [
-            'headerTags' => ''
+            'site' => $this
         ];
-        $this->render(self::MAIN_PAGE_FILE);
+        $this->render(self::MAIN_PAGE_FILE, $variables);
     }
 
     public function getArticlePage()
@@ -40,11 +43,7 @@ final class Site
 
     private function render(string $template = '', array $variables = [])
     {
-        try {
-            include( template_dir(self::MAIN_PAGE_FILE) );
-        } catch (\Exception $e) {
-
-        }
+        $view = new View($template, $variables);
     }
 
 

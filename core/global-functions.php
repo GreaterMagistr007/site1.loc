@@ -124,3 +124,14 @@ function redirect($uri = '/', $code = 302) {
     header("Location $newLocation", true, $code);
     exit();
 }
+
+
+/**
+ * @param string $template
+ * @param array $variables
+ * @return \core\modules\View
+ */
+function render(string $template = '', array $variables = []) {
+    $view = new \core\modules\View($template, $variables);
+    return $view;
+}
