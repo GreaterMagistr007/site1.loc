@@ -66,8 +66,8 @@ final class Site
         $result[] = "<meta property='og:description' content='" . replace_quotes($variables['description']) . "'>";
 
         if ($variables['image']) {
-            $result[] = "<meta property='og:image' content='" . replace_quotes($request::href($variables['image'])) . "'>";
-            $result[] = "<link rel='image_src' href='" . replace_quotes($request::href($variables['image'])) . "'>";
+            $result[] = "<meta property='og:image' content='" . replace_quotes(href($variables['image'])) . "'>";
+            $result[] = "<link rel='image_src' href='" . replace_quotes(href($variables['image'])) . "'>";
         }
 
         $result[] = "\r\n\r\n" . $this->metrics;

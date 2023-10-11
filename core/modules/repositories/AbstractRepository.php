@@ -15,16 +15,17 @@ abstract class AbstractRepository
     /**
      * Считываем файл .json из директории data и возвращаем значения
      * @param $fileTitle
-     * @return void
+     * @param $toArray
+     * @return mixed
      */
-    public function readDataFile($fileTitle)
+    public function readDataFile($fileTitle, $toArray = false)
     {
         $file = data_dir($fileTitle . '.' . self::FILE_EXTENSION);
         if (!file_exists($file)) {
             dd('Не удалось прочитать файл ' . $file);
         }
 
-        return json_decode(file_get_contents($file));
+        return json_decode(file_get_contents($file), $toArray);
     }
 
     public function saveToFile(string $fileTitle, object $data)

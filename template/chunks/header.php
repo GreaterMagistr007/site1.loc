@@ -9,27 +9,15 @@
                         <span class="icon-bar"></span>
                     </a>
                     <h1>
-                        <a class="brand" href="index.html">Andia - a super cool design agency...</a>
+                        <a class="brand" href="<?= href('/') ?>">Текст логотипа, если нет картинки</a>
                     </h1>
                     <div class="nav-collapse collapse">
                         <ul class="nav pull-right">
                             <li>
-                                <a href="index.html"><i class="icon-home"></i><br />Home</a>
-                            </li>
-                            <li>
-                                <a href="portfolio.html"><i class="icon-camera"></i><br />Portfolio</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="icon-comments"></i><br />Blog</a>
-                            </li>
-                            <li>
-                                <a href="services.html"><i class="icon-tasks"></i><br />Services</a>
-                            </li>
-                            <li>
-                                <a href="about.html"><i class="icon-user"></i><br />About</a>
+                                <a href="<?= href('/') ?>"><i class="icon-home"></i><br />Главная</a>
                             </li>
                             <li class="current-page">
-                                <a href="contact.html"><i class="icon-envelope-alt"></i><br />Contact</a>
+                                <a href="<?= href('/contact') ?>"><i class="icon-envelope-alt"></i><br />Контакты</a>
                             </li>
                         </ul>
                     </div>
