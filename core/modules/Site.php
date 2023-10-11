@@ -11,14 +11,16 @@ final class Site
     public string $title;
     public string $description;
     public string $keywords;
+    public string $lang; // Локализация сайта
 
     public function __construct()
     {
         $this->repository = new SiteRepository(PARAMS['DB_DRIVER']);
 
-        $this->title = $this->repository->getTitle();
-        $this->description = $this->repository->getDescription();
-        $this->keywords = $this->repository->getKeywords();
+        $this->title = $this->repository->title;
+        $this->description = $this->repository->description;
+        $this->keywords = $this->repository->keywords;
+        $this->lang = $this->repository->lang;
     }
 
     const MAIN_PAGE_FILE = 'index';
@@ -43,7 +45,7 @@ final class Site
 
     private function render(string $template = '', array $variables = [])
     {
-        $view = new View($template, $variables);
+        render($template, $variables);
     }
 
 

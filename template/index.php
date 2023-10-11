@@ -1,12 +1,2 @@
-Входной файл
-
-<?php
-/**
- * В шаблон попадают глобальные переменные
- */
-
-
-render('main_page');
-
-//dd($site);
-//dd('Главная страница');
+<?php render('chunks.head') ?>
+<?php render('chunks.header') ?>

@@ -17,34 +17,15 @@ final class SiteRepository extends AbstractRepository
         $this->settings = $this->readDataFile('site');
     }
 
-    public function getTitle()
+    public function __get(string $name): string
     {
-        return $this->settings->title;
+        return isset($this->settings->$name) ? $this->settings->$name : '';
     }
 
-    public function setTitle(string $newTitle)
+    public function __set(string $name, $value): void
     {
-        $this->settings->title = $newTitle;
-    }
-
-    public function getDescription()
-    {
-        return $this->settings->description;
-    }
-
-    public function setDescription(string $newDescription)
-    {
-        $this->settings->description = $newDescription;
-    }
-
-    public function getKeywords()
-    {
-        return $this->settings->keywords;
-    }
-
-    public function setKeywords(string $newKeywords)
-    {
-        $this->settings->keywords = $newKeywords;
+        $this->settings->$name = $value;
+        $this->save();
     }
 
     public function save()
