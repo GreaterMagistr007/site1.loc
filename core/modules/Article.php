@@ -36,4 +36,14 @@ class Article
     {
         return href('/' . $this->id);
     }
+
+    public function save()
+    {
+        self::$repository->save($this);
+    }
+
+    public function delete()
+    {
+        self::$repository->delete($this);
+    }
 }

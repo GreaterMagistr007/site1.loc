@@ -97,8 +97,7 @@ class ArticleRepository extends AbstractRepository
             return null;
         }
 
-        $fileNum = intdiv($id, self::ARTICLES_PER_FILE) + 1;
-        $articlesInFile = $this->readDataFile('articles' . $fileNum, true);
+        $articlesInFile = $this->readDataFile($this->getArticlesFileNameById($id), true);
 
         return isset($articlesInFile[$id]) ? new Article($articlesInFile[$id]) : null;
     }
@@ -115,5 +114,84 @@ class ArticleRepository extends AbstractRepository
         return isset($this->chpuToId[$chpu]) ? $this->chpuToId[$chpu] : false;
     }
 
+    /**
+     * @param int $id
+     * @return int
+     */
+    private function getFileIndexById(int $id)
+    {
+        return intdiv($id, self::ARTICLES_PER_FILE) + 1;
+    }
 
+    private function getArticlesFileNameById(int $id)
+    {
+        return 'articles' . $this->getFileIndexById($id);
+    }
+
+    public function save(Article $article)
+    {
+        $newArticle = new \stdClass;
+        foreach (get_object_vars($article) as $key => $value) {
+            $newArticle->$key = $value;
+        }
+
+        // Назначим CHPU
+        if (!isset($newArticle->chpu) || !is_string($newArticle->chpu) || strlen($newArticle->chpu) < 2) {
+            $newArticle->chpu = translit($newArticle->title);
+        }
+        // Назначим Id
+        if (!isset($newArticle->id)) {
+            $newArticle->id = $this->getMaxId() + 1;
+        }
+
+        $oldArticle = $this->getById($newArticle->id);
+
+        $needSave = false;
+        if (!$oldArticle) {
+            // Статьи такой еще не было
+            while ($this->getArticleByChpu($newArticle->chpu)) {
+                // такое ЧПУ уже есть, нужно придумать уникальное:
+                $newArticle->chpu .=  $newArticle->id;
+            }
+
+            $this->chpuToId[$newArticle->chpu] = $newArticle->id;
+            $needSave = true;
+        } else {
+            // Статья была, нужно исправить chpu
+            if ($oldArticle->chpu !== $newArticle->chpu) {
+                while ($this->getArticleByChpu($newArticle->chpu)) {
+                    // такое ЧПУ уже есть, нужно придумать уникальное:
+                    $newArticle->chpu .=  $newArticle->id;
+                }
+                unset($this->chpuToId[$oldArticle->chpu]);
+                $this->chpuToId[$newArticle->chpu] = $newArticle->id;
+                $needSave = true;
+            }
+        }
+        // Сохраним список ChpuToId :
+        if ($needSave) {
+            $this->saveToFile('articles_chpu_to_id', $this->chpuToId);
+        }
+
+        // Теперь сохраним саму статью в нужный файл:
+        $fileName = $this->getArticlesFileNameById($newArticle->id);
+
+        $data = $this->readDataFile($fileName, true);
+        $data[$newArticle->id] = $newArticle;
+
+        $this->saveToFile($fileName, $data);
+    }
+
+    public function delete(Article $article)
+    {
+        // Удалим из файла
+        $fileName = $this->getArticlesFileNameById($article->id);
+        $data = $this->readDataFile($fileName, true);
+        unset($data[$article->id]);
+        $this->saveToFile($fileName, $data);
+
+        // Удалим из реестра
+        unset($this->chpuToId[$article->chpu]);
+        $this->saveToFile('articles_chpu_to_id', $this->chpuToId);
+    }
 }
