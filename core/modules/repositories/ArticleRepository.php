@@ -128,6 +128,10 @@ class ArticleRepository extends AbstractRepository
         return 'articles' . $this->getFileIndexById($id);
     }
 
+    /**
+     * @param Article $article
+     * @return void
+     */
     public function save(Article $article)
     {
         $newArticle = new \stdClass;
@@ -182,6 +186,10 @@ class ArticleRepository extends AbstractRepository
         $this->saveToFile($fileName, $data);
     }
 
+    /**
+     * @param Article $article
+     * @return void
+     */
     public function delete(Article $article)
     {
         // Удалим из файла
