@@ -1,5 +1,5 @@
 <?php
-    $newArticles = \core\modules\Article::getNewArticles(4,0);
+    $newArticles = \core\modules\Article::getNewArticles(5,0);
 ?>
 <div class="contact-address span3">
     <h4>Новые статьи</h4>
