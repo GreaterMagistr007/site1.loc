@@ -68,7 +68,7 @@ class ArticleRepository extends AbstractRepository
     private function getMaxId()
     {
         if (!$this->maxId) {
-            $this->maxId = max($this->chpuToId);
+            $this->maxId = count($this->chpuToId) ? max($this->chpuToId) : 0;
         }
         return $this->maxId;
     }
