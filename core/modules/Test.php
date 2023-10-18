@@ -84,17 +84,71 @@ class Test
     }
 
     /**
+     * @return void
+     */
+    public function articlesTest():void
+    {
+        $articlesCount = 3;
+        $articles = $this->generateArticles($articlesCount);
+        if (!$this->isArticlesEqual($articles)) {
+            throw new \DomainException('Статьи не совпали', 500);
+        }
+        $this->deleteArticles($articles);
+    }
+
+    /**
+     * @return void
+     */
+    public function siteTest():void
+    {
+        // Сохраним старые параметры сайта
+        $oldParams = [];
+        $newParams = [];
+        $site = new Site();
+
+        foreach (get_object_vars($site) as $key => $value) {
+            $oldParams[$key] = $value;
+
+            // поменяем параметры:
+            $newValue = $key . date('Y-m-d H:i:s');
+            $newParams[$key] = $newValue;
+            $site->$key = $newValue;
+        }
+
+        $site->save();
+
+        // Сверимся
+        unset($site);
+        $site = new Site();
+
+        foreach ($newParams as $key => $value) {
+            if ($site->$key !== $value) {
+                dd(
+                    'Не совпали новые значения для сайта!',
+                    $key,
+                    $value,
+                    $site->$key
+                );
+            }
+        }
+
+        // восстановим старые параметры:
+        foreach ($oldParams as $key => $value) {
+            $site->$key = $value;
+        }
+
+        $site->save();
+
+    }
+
+    /**
      * @return bool
      */
     public function run():bool
     {
         try {
-            $articlesCount = 3;
-            $articles = $this->generateArticles($articlesCount);
-            if (!$this->isArticlesEqual($articles)) {
-                throw new \DomainException('Статьи не совпали', 500);
-            }
-            $this->deleteArticles($articles);
+            $this->articlesTest();
+            $this->siteTest();
         } catch (\Exception $e) {
             dd([
                 'Ошибка при выполнении тестов!!!',

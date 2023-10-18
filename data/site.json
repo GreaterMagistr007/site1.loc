@@ -1,9 +1,1 @@
-{
-  "title" : "Заголовок сайта",
-  "description" : "Описание (дескрипшн)",
-  "keywords" : "Ключевые слова",
-  "lang" : "ru",
-  "locale" : "ru_RU",
-  "image" : "",
-  "metrics" : ""
-}
+{"title":"\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a \u0441\u0430\u0439\u0442\u0430","description":"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 (\u0434\u0435\u0441\u043a\u0440\u0438\u043f\u0448\u043d)","keywords":"\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u0441\u043b\u043e\u0432\u0430","lang":"ru","locale":"ru_RU","image":"","metrics":"","repository":{"driver":"file"},"logo":""}

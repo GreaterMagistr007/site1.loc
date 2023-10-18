@@ -75,6 +75,27 @@ final class Site
         return implode($result);
     }
 
+    public function __get(string $name)
+    {
+        return isset($this->$name) ? $this->$name : $this->repository->$name;
+    }
+
+    function save()
+    {
+        foreach (get_object_vars($this) as $key => $value) {
+            $this->repository->$key = $value;
+        }
+
+        $this->repository->save();
+    }
+
+    public function __set(string $name, $value): void
+    {
+        $this->$name = $value;
+        $this->repository->$name = $value;
+        $this->repository->save();
+    }
+
     public function getArticlePage()
     {
         dd('Страница статьи');
