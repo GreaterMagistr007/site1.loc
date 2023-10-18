@@ -78,6 +78,7 @@ class Test
             $createdArticle->delete();
         }
         echo('Статьи удалены');
+        return true;
     }
 
     /**
