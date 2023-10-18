@@ -26,8 +26,10 @@ class Test
         $datetime = date('Y-m-d H:i:s');
 
         for ($i = 0; $i < $count; $i++) {
+            $paragraphCount = rand(1,10);
             $params = [
                 'title' => 'Статья ' . $datetime . ' - ' . $i,
+                'content' => file_get_contents('http://loripsum.net/api/' . $paragraphCount)
             ];
             $articles[] = $params;
             $article = new Article($params);
