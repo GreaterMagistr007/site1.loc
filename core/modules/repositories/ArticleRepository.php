@@ -22,9 +22,6 @@ class ArticleRepository extends AbstractRepository
      */
     private array $chpuToId = [];
 
-
-    private int $maxId = 0;
-
     /** Количество статей в одном файле */
     const ARTICLES_PER_FILE = 10;
 
@@ -32,7 +29,6 @@ class ArticleRepository extends AbstractRepository
     {
         parent::__construct($driver);
         $this->chpuToId = $this->readDataFile('articles_chpu_to_id', true);
-        $this->getMaxId();
     }
 
     /**
@@ -40,7 +36,7 @@ class ArticleRepository extends AbstractRepository
      * @param $offset
      * @return array of Article
      */
-    public function getNewArticles($count = 5, $offset = 0)
+    public function getNewArticles($count = 5, $offset = 0):array
     {
         $result = [];
 
@@ -65,19 +61,16 @@ class ArticleRepository extends AbstractRepository
      * Id последней статьи
      * @return int
      */
-    private function getMaxId()
+    private function getMaxId():int
     {
-        if (!$this->maxId) {
-            $this->maxId = count($this->chpuToId) ? max($this->chpuToId) : 0;
-        }
-        return $this->maxId;
+        return count($this->chpuToId) ? max($this->chpuToId) : 0;
     }
 
     /**
      * @param string $chpu
      * @return Article|null
      */
-    public function getArticleByChpu(string $chpu)
+    public function getArticleByChpu(string $chpu):Article|null
     {
         $id = $this->getIdByChpu($chpu);
         if (!$id) {
@@ -91,7 +84,7 @@ class ArticleRepository extends AbstractRepository
      * @param int $id
      * @return Article|null
      */
-    public function getById(int $id)
+    public function getById(int $id):Article|null
     {
         if ($id < 1) {
             return null;
@@ -104,12 +97,12 @@ class ArticleRepository extends AbstractRepository
 
     /**
      * @param string $chpu
-     * @return int|false
+     * @return int|null
      */
-    private function getIdByChpu(string $chpu)
+    private function getIdByChpu(string $chpu):int|null
     {
         if (!($chpu) || strlen($chpu) < 1 || strlen($chpu) > 255) {
-            return false;
+            return null;
         }
         return isset($this->chpuToId[$chpu]) ? $this->chpuToId[$chpu] : false;
     }
@@ -118,21 +111,25 @@ class ArticleRepository extends AbstractRepository
      * @param int $id
      * @return int
      */
-    private function getFileIndexById(int $id)
+    private function getFileIndexById(int $id):int
     {
         return intdiv($id, self::ARTICLES_PER_FILE) + 1;
     }
 
-    private function getArticlesFileNameById(int $id)
+    /**
+     * @param int $id
+     * @return string
+     */
+    private function getArticlesFileNameById(int $id):string
     {
         return 'articles' . $this->getFileIndexById($id);
     }
 
     /**
      * @param Article $article
-     * @return void
+     * @return int
      */
-    public function save(Article $article)
+    public function save(Article $article):int
     {
         $newArticle = new \stdClass;
         foreach (get_object_vars($article) as $key => $value) {
@@ -184,13 +181,15 @@ class ArticleRepository extends AbstractRepository
         $data[$newArticle->id] = $newArticle;
 
         $this->saveToFile($fileName, $data);
+
+        return $newArticle->id;
     }
 
     /**
      * @param Article $article
      * @return void
      */
-    public function delete(Article $article)
+    public function delete(Article $article):void
     {
         // Удалим из файла
         $fileName = $this->getArticlesFileNameById($article->id);

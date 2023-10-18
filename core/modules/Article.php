@@ -32,18 +32,66 @@ class Article
         }
     }
 
-    public function getHref()
+    /**
+     * @return string
+     */
+    public function getHref():string
     {
-        return href('/' . $this->id);
+        return href('/' . $this->getChpu());
     }
 
-    public function save()
+    /**
+     * @return string
+     */
+    public function getChpu():string
     {
-        self::$repository->save($this);
+        if (!isset($this->chpu) || !$this->chpu) {
+            $this->chpu = translit($this->title);
+        }
+
+        return $this->chpu;
     }
 
-    public function delete()
+    /**
+     * @param int $id
+     * @return Article|null
+     */
+    public static function getById(int $id):Article|null
     {
-        self::$repository->delete($this);
+        return self::getRepository()->getById($id);
+    }
+
+    /**
+     * @param string $chpu
+     * @return Article|null
+     */
+    public static function getByChpu(string $chpu):Article|null
+    {
+        return self::getRepository()->getArticleByChpu($chpu);
+    }
+
+    /**
+     * @return void
+     */
+    public function save():void
+    {
+        $id = self::getRepository()->save($this);
+        $newArticle = self::getById($id);
+
+        foreach (get_object_vars($newArticle) as $key => $value) {
+            if (!isset($this->$key) || $this->$key !== $value) {
+                $this->$key = $value;
+            }
+        }
+
+        unset($newArticle);
+    }
+
+    /**
+     * @return void
+     */
+    public function delete():void
+    {
+        self::getRepository()->delete($this);
     }
 }
