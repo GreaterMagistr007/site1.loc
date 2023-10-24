@@ -3,6 +3,8 @@
 // Подключим файл конфигурации
 require_once 'config.php';
 
+$params = PARAMS;
+
 // Файл с функциями:
 require_once 'global-functions.php';
 

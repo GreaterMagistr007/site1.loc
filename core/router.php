@@ -1,7 +1,8 @@
 <?php
 use core\modules\Route;
 
-Route::add('/test', 'Test@run');
+//$testLink = '/test-' . env('token');
+//Route::add($testLink, 'Test@run');
 
 // Перечислим доступные страницы ошибок:
 Route::add('/404', 'Site@get404Page');

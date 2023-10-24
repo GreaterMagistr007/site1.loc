@@ -170,3 +170,26 @@ function translit($value) {
 
     return $value;
 }
+
+/**
+ * @param string $key
+ * @param $value
+ * @return mixed|void
+ */
+function env(string $key, $value = null) {
+    global $params;
+    $args = func_get_args();
+    $key = $args[0] ?? false;
+
+    if (!$key) {
+        return;
+    }
+
+    if (isset($args[1])) {
+        $value = $args[1];
+        $params[$key] = $value;
+        return;
+    }
+
+    return $params[$key] ?? null;
+}
