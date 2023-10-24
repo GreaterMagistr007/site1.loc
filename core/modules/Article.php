@@ -14,7 +14,7 @@ class Article
     protected static function getRepository()
     {
         if (!self::$repository) {
-            self::$repository = new ArticleRepository(PARAMS['DB_DRIVER']);
+            self::$repository = new ArticleRepository(env('DB_DRIVER'));
         }
 
         return self::$repository;

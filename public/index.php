@@ -6,7 +6,7 @@ try {
     ini_set('display_startup_errors', 1);
     require_once('../core/init.php');
 } catch (Exception $e) {
-    if (!PARAMS['DEBUG']) {
+    if (!env('DEBUG')) {
         exit(500);
     }
 }

@@ -18,7 +18,7 @@ final class Site
 
     public function __construct()
     {
-        $this->repository = new SiteRepository(PARAMS['DB_DRIVER']);
+        $this->repository = new SiteRepository(env('DB_DRIVER'));
 
         $this->title = $this->repository->title;
         $this->description = $this->repository->description;
